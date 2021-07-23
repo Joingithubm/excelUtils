@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utils.mapper.CommonMapper">
+
+    <select id="selectTableToMap" resultType="map" parameterType="java.lang.String">
+        select t.table_name,
+               t.column_name,
+               t.data_type,
+               t.data_length,
+               t.nullable,
+               c.comments
+        from user_tab_columns t
+                 left join user_col_comments c
+                           on t.table_name = c.table_name
+                               and t.column_name = c.column_name
+        where t.table_name = ${_parameter}
+        order by t.column_id
+
+    </select>
+
+    <select id="selectDataSource" resultType="java.util.Map" >
+        select t.table_name, c.comments
+        from user_tables t
+                 left join user_tab_comments c
+                           on t.table_name = c.table_name
+        order by table_name
+
+    </select>
+
+</mapper>
